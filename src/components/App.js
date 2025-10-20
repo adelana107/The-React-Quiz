@@ -5,10 +5,11 @@ import Loader from "./Loader";
 import Error from "./Error";
 import StartScreen from "./StartScreen";
 import Question from "./Question";
+import NextButton from "./NextButton";
 
 const initialState = {
   questions: [],
-  status: "loading",
+  status: "loading", // "loading" | "error" | "ready" | "active" | "finished"
   index: 0,
   answer: null,
   points: 0,
@@ -22,24 +23,28 @@ function reducer(state, action) {
         questions: action.payload,
         status: "ready",
       };
+
     case "dataFailed":
-      return {
-        ...state,
-        status: "error",
-      };
+      return { ...state, status: "error" };
 
     case "start":
       return { ...state, status: "active" };
 
-    case "newAnswer":
+    case "newAnswer": {
       const question = state.questions.at(state.index);
+      const isCorrect = action.payload === question.correctOption;
       return {
         ...state,
         answer: action.payload,
-        points:
-          action.payload === question.coorectOption
-            ? state.points + question.points
-            : state.points,
+        points: isCorrect ? state.points + question.points : state.points,
+      };
+    }
+
+    case "nextQuestion":
+      return {
+        ...state,
+        index: state.index + 1,
+        answer: null,
       };
 
     default:
@@ -55,11 +60,11 @@ export default function App() {
 
   const numQuestions = questions.length;
 
-  useEffect(function () {
+  useEffect(() => {
     fetch("http://localhost:8000/questions")
       .then((res) => res.json())
       .then((data) => dispatch({ type: "dataReceived", payload: data }))
-      .catch((err) => dispatch({ type: "dataFailed" }));
+      .catch(() => dispatch({ type: "dataFailed" }));
   }, []);
 
   return (
@@ -73,11 +78,14 @@ export default function App() {
           <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
         )}
         {status === "active" && (
-          <Question
-            question={questions[index]}
-            dispatch={dispatch}
-            answer={answer}
-          />
+          <>
+            <Question
+              question={questions[index]}
+              dispatch={dispatch}
+              answer={answer}
+            />
+            <NextButton dispatch={dispatch} answer={answer} />
+          </>
         )}
       </Main>
     </div>
