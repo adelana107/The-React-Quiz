@@ -1,70 +1,142 @@
-# Getting Started with Create React App
+🧠 React Quiz App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A fun and interactive quiz application built with React and powered by a local JSON API using json-server.
+The app dynamically fetches quiz questions, tracks your progress, scores, and even includes a countdown timer!
 
-## Available Scripts
+🚀 Features
 
-In the project directory, you can run:
+🎯 Multiple-choice quiz questions
 
-### `npm start`
+⏱️ Countdown timer for each question (30 seconds)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+🧮 Points system and highscore tracking
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+🔁 Restart functionality
 
-### `npm test`
+⚡ State management with useReducer
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+🔄 Data fetched from a local JSON API
 
-### `npm run build`
+🧩 Project Structure
+src/
+│
+├── App.js
+├── Header.js
+├── Main.js
+├── Loader.js
+├── Error.js
+├── StartScreen.js
+├── Question.js
+├── NextButton.js
+├── Progress.js
+├── FinishScreen.js
+├── Footer.js
+└── Timer.js
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Each component handles a specific part of the quiz logic or UI — making the app modular and easy to extend.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+⚙️ How It Works
 
-### `npm run eject`
+On startup, the app fetches quiz questions from a JSON API (http://localhost:8000/questions).
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The user can start the quiz, answer questions, and watch the timer tick down.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The app keeps track of:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Current question index
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Total points
 
-## Learn More
+Correct answers
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Highscore (persisted in state)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+When the quiz is complete, the user’s score and highscore are displayed.
 
-### Code Splitting
+🧠 State Flow (useReducer)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+The app uses a reducer to manage all state transitions:
 
-### Analyzing the Bundle Size
+Action Type	Description
+dataReceived	Data successfully loaded from the API
+dataFailed	Error fetching questions
+start	Start the quiz
+newAnswer	Store the user’s answer and calculate points
+nextQuestion	Move to the next question
+finish	End the quiz
+restart	Restart the quiz
+tick	Update the timer every second
+🔌 Setting Up the Local JSON API
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Install JSON Server
 
-### Making a Progressive Web App
+npm install -g json-server
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+Create the JSON file
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+In your project folder, make a file:
 
-### Deployment
+data/questions.json
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+Paste in something like:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+{
+  "questions": [
+    {
+      "question": "What is React?",
+      "options": ["A library", "A framework", "A language", "A database"],
+      "correctOption": 0,
+      "points": 10
+    },
+    {
+      "question": "Which hook manages state?",
+      "options": ["useReducer", "useEvent", "useState", "useForm"],
+      "correctOption": 2,
+      "points": 10
+    }
+  ]
+}
+
+
+Start the server
+
+npx json-server --watch data/questions.json --port 8000
+
+
+The API will be available at:
+
+http://localhost:8000/questions
+
+
+Run your React app
+
+npm start
+
+🖥️ Tech Stack
+
+React 18+
+
+JavaScript (ES6)
+
+JSON Server
+
+CSS Modules / Global Styles
+
+🧾 Future Improvements
+
+✅ Add localStorage to persist highscores
+
+✅ Add a settings screen for quiz category and difficulty
+
+✅ Add sound or animation feedback for correct/incorrect answers
+
+✅ Integrate an online API (like Open Trivia DB)
+
+💡 Author
+
+Adelana Oluwafunmibi Cornelius
+📍 Nigeria
+💻 Passionate about clean UI, creative problem-solving, and scalable React apps.
